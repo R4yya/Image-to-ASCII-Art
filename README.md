@@ -1,1 +1,1 @@
-# Image-to_ASCII-Art
+# Image-to-ASCII-Art
