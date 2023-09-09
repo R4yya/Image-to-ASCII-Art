@@ -6,12 +6,13 @@ class ImageToAsciiArt(object):
         self.ASCII_CHARS = " .,'`\"^:;-~+*i|!1lI?COQ0MWB8%$@#"
         self.ASCII_CHAR_COUNT = len(self.ASCII_CHARS)
 
-    def scale_image(self, image, new_width=100):
+    def scale_image(self, image, new_width=80):
         (original_width, original_height) = image.shape[1], image.shape[0]
         aspect_ratio = original_height / original_width
         new_height = int(new_width * aspect_ratio)
         new_image = cv2.resize(image, (new_width, new_height))
-        return new_image
+        flipped_image = cv2.flip(new_image, 1)
+        return flipped_image
 
     def convert_grayscale(self, image):
         return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -20,7 +21,7 @@ class ImageToAsciiArt(object):
         ascii_index = pixel_value // range_width
         return self.ASCII_CHARS[ascii_index]
 
-    def convert_image_to_ascii(self, image, new_width=100):
+    def convert_image_to_ascii(self, image, new_width=80):
         image = self.scale_image(image, new_width)
         image = self.convert_grayscale(image)
         ascii_lines = []
@@ -47,6 +48,7 @@ class ImageToAsciiArt(object):
                 break
 
             ascii_art = self.convert_image_to_ascii(frame)
+
             print(ascii_art)
 
         cap.release()
